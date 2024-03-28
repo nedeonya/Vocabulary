@@ -1,0 +1,6 @@
+@Vocabulary_HostAddress = http://localhost:5031
+
+GET {{Vocabulary_HostAddress}}/vocabulary/
+Accept: application/json
+
+###
