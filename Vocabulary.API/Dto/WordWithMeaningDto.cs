@@ -1,8 +1,8 @@
 namespace Vocabulary.Dto;
 
-public class WordWithMeaningDto
+public record WordWithMeaningDto(string Name, string Description, string? Example)
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string? Example { get; set; }
+    public WordWithMeaningDto() : this(string.Empty, string.Empty, string.Empty)
+    {
+    }
 }

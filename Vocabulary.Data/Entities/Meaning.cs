@@ -1,12 +1,10 @@
 ﻿namespace Vocabulary.Data.Entities
 {
-    public class Meaning: IMeaning
+    public record Meaning(Guid Id, string Description, string? Example, Guid WordId, Word Word) : IMeaning
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Description { get; set; }
-        public string? Example { get; set; }
-        public Guid WordId { get; set; }
-        public Word Word { get; set; }
+        public Meaning() : this(Guid.NewGuid(), string.Empty, string.Empty, Guid.Empty, null)
+        {
+        }
     }
 }
 
