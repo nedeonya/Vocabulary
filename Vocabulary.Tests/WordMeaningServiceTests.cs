@@ -1,7 +1,7 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.EntityFrameworkCore;
-using Vocabulary.Data.Data;
+using Vocabulary.Data;
 using Vocabulary.Data.Entities;
 using Vocabulary.Data.Repository;
 using Vocabulary.Services;

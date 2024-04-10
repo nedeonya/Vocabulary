@@ -1,13 +1,13 @@
-using Vocabulary.Data.Data;
+
 using Vocabulary.Data.Entities;
 
 namespace Vocabulary.Data.Repository;
 
 public class WordMeaningRepository : IWordMeaningRepository
 {
-    private DataContext _context;
+    private IDataContext _context;
 
-    public WordMeaningRepository(DataContext context)
+    public WordMeaningRepository(IDataContext context)
     {
         _context = context;
     }
@@ -74,7 +74,7 @@ public class WordMeaningRepository : IWordMeaningRepository
             Name = word.Name
         };
 
-        _context.Add(addWord);
+        _context.Words.Add(addWord);
         return true;
 
     }
@@ -94,7 +94,7 @@ public class WordMeaningRepository : IWordMeaningRepository
             WordId = meaning.WordId
         };
 
-        _context.Add(addMeaning);
+        _context.Meanings.Add(addMeaning);
         return true;
 
     }
@@ -107,7 +107,7 @@ public class WordMeaningRepository : IWordMeaningRepository
         }
 
         var updateWord = _context.Words.Find(word.Id);
-        _context.Entry(updateWord).CurrentValues.SetValues(word);
+        _context.Words.Entry(updateWord).CurrentValues.SetValues(word);
         return true;
     }
 
@@ -119,8 +119,8 @@ public class WordMeaningRepository : IWordMeaningRepository
         }
         
         var updateMeaning = _context.Meanings.Find(meaning.Id);
-        _context.Entry(updateMeaning).CurrentValues.SetValues(meaning);
-        _context.Entry(updateMeaning).Property(m=>m.WordId).IsModified = false;
+        _context.Meanings.Entry(updateMeaning).CurrentValues.SetValues(meaning);
+        _context.Meanings.Entry(updateMeaning).Property(m=>m.WordId).IsModified = false;
         return true;
     }
 
@@ -132,7 +132,7 @@ public class WordMeaningRepository : IWordMeaningRepository
             return false;
         }
 
-        _context.Remove(word);
+        _context.Words.Remove(word);
         return true;
     }
 
@@ -144,7 +144,7 @@ public class WordMeaningRepository : IWordMeaningRepository
             return false;
         }
 
-        _context.Remove(meaning);
+        _context.Meanings.Remove(meaning);
         return true;
     }
 }

@@ -1,13 +1,13 @@
-using Vocabulary.Data.Data;
+using Vocabulary.Data;
 
 namespace Vocabulary.Data.Repository;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private DataContext _dataContext;
+    private IDataContext _dataContext;
     public IWordMeaningRepository WordMeaningRepository { get; }
 
-    public UnitOfWork(DataContext dataContext, IWordMeaningRepository wordMeaningRepository)
+    public UnitOfWork(IDataContext dataContext, IWordMeaningRepository wordMeaningRepository)
     {
         _dataContext = dataContext;
         WordMeaningRepository = wordMeaningRepository;
