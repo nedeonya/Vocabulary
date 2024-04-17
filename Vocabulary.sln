@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.Tests", "Vocabul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.Data", "Vocabulary.Data\Vocabulary.Data.csproj", "{51155E32-2E34-4BEF-97B4-AB5C9DEDFA6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.Services", "Vocabulary.Services\Vocabulary.Services.csproj", "{EDD7606C-984B-40F4-8CC7-FEAA534ACF41}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.Contracts", "Vocabulary.Contracts\Vocabulary.Contracts.csproj", "{7A58EE0E-0767-4D09-8CCF-00B64DF92A95}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{51155E32-2E34-4BEF-97B4-AB5C9DEDFA6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51155E32-2E34-4BEF-97B4-AB5C9DEDFA6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51155E32-2E34-4BEF-97B4-AB5C9DEDFA6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDD7606C-984B-40F4-8CC7-FEAA534ACF41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDD7606C-984B-40F4-8CC7-FEAA534ACF41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDD7606C-984B-40F4-8CC7-FEAA534ACF41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDD7606C-984B-40F4-8CC7-FEAA534ACF41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A58EE0E-0767-4D09-8CCF-00B64DF92A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A58EE0E-0767-4D09-8CCF-00B64DF92A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A58EE0E-0767-4D09-8CCF-00B64DF92A95}.Release|Any CPU.ActiveCfg = Release|Any CPU

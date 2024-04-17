@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Vocabulary.Data.Entities;
-using Vocabulary.Services;
+using Vocabulary.Data.Repository;
 
 namespace Vocabulary.Controllers;
 
@@ -8,9 +8,9 @@ namespace Vocabulary.Controllers;
 [ApiController]
 public class MeaningController: Controller
 {
-    private readonly IWordMeaningService _service;
+    private readonly IWordMeaningRepository _service;
     
-    public MeaningController(IWordMeaningService service)
+    public MeaningController(IWordMeaningRepository service)
     {
         _service = service;
     }

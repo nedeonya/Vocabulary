@@ -28,6 +28,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Vocabulary.API\Vocabulary.API.csproj" />
+      <ProjectReference Include="..\Vocabulary.Data\Vocabulary.Data.csproj" />
     </ItemGroup>
 
 </Project>

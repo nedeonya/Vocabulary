@@ -4,22 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Vocabulary.Controllers;
 using Vocabulary.Data.Entities;
+using Vocabulary.Data.Repository;
 using Vocabulary.Dto;
-using Vocabulary.Services;
 
 namespace Vocabulary_Tests;
 
 [TestFixture]
 public class MeaningControllerTests
 {
-    private IWordMeaningService _mockService;
+    private IWordMeaningRepository _mockRepository;
     private MeaningController _controller;
 
     [SetUp]
     public void SetUp()
     {
-        _mockService = Substitute.For<IWordMeaningService>();
-        _controller = new MeaningController(_mockService);
+        _mockRepository = Substitute.For<IWordMeaningRepository>();
+        _controller = new MeaningController(_mockRepository);
     }
 
     [TearDown]
@@ -37,8 +37,8 @@ public class MeaningControllerTests
             new MeaningDto() { Description = "meaning1", Example = "example1" },
             new MeaningDto() { Description = "meaning2", Example = "example2" }
         };
-        _mockService.IsWordExist(wordName).Returns(true);
-        _mockService.GetMeaningsForWord(wordName).Returns(meanings);
+        _mockRepository.IsWordExist(wordName).Returns(true);
+        _mockRepository.GetMeaningsForWord(wordName).Returns(meanings);
         
         var result = _controller.GetMeaningsForWord(wordName) as OkObjectResult;
         
@@ -50,7 +50,7 @@ public class MeaningControllerTests
     public void GetMeaningsForWord_WhenWordNotExist_ReturnsNotFound()
     {
         var wordName = "non-existing-word";
-        _mockService.IsWordExist(wordName).Returns(false);
+        _mockRepository.IsWordExist(wordName).Returns(false);
         
         var result = _controller.GetMeaningsForWord(wordName);
         result.Should().BeEquivalentTo(new NotFoundResult());
@@ -69,8 +69,8 @@ public class MeaningControllerTests
     public void DeleteMeaning_WhenMeaningExist_ReturnsNoContent()
     {
         var meaningId = Guid.NewGuid();
-        _mockService.IsMeaningExist(meaningId).Returns(true);
-        _mockService.DeleteMeaning(meaningId).Returns(true);
+        _mockRepository.IsMeaningExist(meaningId).Returns(true);
+        _mockRepository.DeleteMeaning(meaningId).Returns(true);
         
         var result = _controller.DeleteMeaning(meaningId);
         result.Should().BeEquivalentTo(new NoContentResult());
@@ -80,7 +80,7 @@ public class MeaningControllerTests
     public void DeleteMeaning_WhenMeaningNotExist_ReturnsNotFound()
     {
         var meaningId = Guid.NewGuid();
-        _mockService.IsMeaningExist(meaningId).Returns(false);
+        _mockRepository.IsMeaningExist(meaningId).Returns(false);
         
         var result = _controller.DeleteMeaning(meaningId);
         result.Should().BeEquivalentTo(new NotFoundResult());
@@ -90,8 +90,8 @@ public class MeaningControllerTests
     public void DeleteMeaning_WhenFailedToDelete_ReturnsInternalServerError()
     {
         var meaningId = Guid.NewGuid();
-        _mockService.IsMeaningExist(meaningId).Returns(true);
-        _mockService.DeleteMeaning(meaningId).Returns(false);
+        _mockRepository.IsMeaningExist(meaningId).Returns(true);
+        _mockRepository.DeleteMeaning(meaningId).Returns(false);
         
         var result = _controller.DeleteMeaning(meaningId);
         

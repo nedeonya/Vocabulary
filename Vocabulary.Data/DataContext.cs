@@ -17,6 +17,11 @@ public class DataContext: DbContext, IDataContext
 
     public DbSet<Word> Words { get; init; }
     public DbSet<Meaning> Meanings { get; init; }
+
+    public bool Save()
+    {
+        return base.SaveChanges() > 0;
+    }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

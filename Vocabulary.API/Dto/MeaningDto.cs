@@ -7,4 +7,8 @@ public record MeaningDto(Guid Id, string Description, string? Example, Guid Word
     public MeaningDto() : this(Guid.NewGuid(), string.Empty, string.Empty, Guid.Empty)
     {
     }
+    
+    public MeaningDto(string Description, string? Example, Guid WordId) : this(Guid.NewGuid(), Description, Example, WordId)
+    {
+    }
 }

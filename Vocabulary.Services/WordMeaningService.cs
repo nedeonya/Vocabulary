@@ -26,14 +26,15 @@ public class WordMeaningService: IWordMeaningService
         return _unitOfWork.WordMeaningRepository.IsMeaningExist(meaningId);
     }
     
-    public IWord GetWord(string wordName)
-    {
-        return _unitOfWork.WordMeaningRepository.GetWord(wordName);
-    }
     
     public IWord GetWord(Guid wordId)
     {
         return _unitOfWork.WordMeaningRepository.GetWord(wordId);
+    }
+    
+    public ICollection<IWord> GetWords()
+    {
+        return _unitOfWork.WordMeaningRepository.GetWords();
     }
     
     public ICollection<IWord> GetWordsByName(string wordName)

@@ -7,6 +7,7 @@ public interface IWordMeaningService
     bool IsWordExist(string wordName);
     bool IsWordExist(Guid wordId);
     bool IsMeaningExist(Guid meaningId);
+    ICollection<IWord> GetWords();
     IWord GetWord(string wordName);
     IWord GetWord(Guid wordId);
     ICollection<IWord> GetWordsByName(string wordName);

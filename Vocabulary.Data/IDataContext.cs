@@ -8,4 +8,5 @@ public interface IDataContext: IDisposable
     DbSet<Word> Words { get;  }
     DbSet<Meaning> Meanings { get;  }
     int SaveChanges();
+    bool Save();
 }
