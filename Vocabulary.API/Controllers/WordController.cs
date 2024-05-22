@@ -18,40 +18,36 @@ public class WordController: Controller
     
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(ICollection<IWord>))]
-    public IActionResult GetWords()
+    public IActionResult GetWords(string? wordName)
     {
-        var words = _repository.GetWords();
-        return Ok(words);
-    }
-
-    [HttpGet("{wordName}")]
-    [ProducesResponseType(200, Type = typeof(ICollection<IWord>))]
-    [ProducesResponseType(400)]
-    public IActionResult GetWordsByName(string wordName)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
         var words = _repository.GetWords(wordName);
         return Ok(words);
-
     }
 
-    [HttpPost]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(500)]
-    public IActionResult CreateWordWithMeaning([FromQuery] WordWithMeaningDto wordWithMeaning)
+    
+    [HttpGet("{wordId}/{meaningId}")]
+    [ProducesResponseType(200, Type = typeof(WordMeaningDto))]
+    public IActionResult GetWordMeaning(Guid wordId, Guid meaningId)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        var word  = new WordDto() { Name = wordWithMeaning.Name };
-        var meaning = new MeaningDto(wordWithMeaning.Description, wordWithMeaning.Example, word.Id);
+        var word = _repository.GetWordWithMeaning(wordId, meaningId);
+        var wordMeaning = new WordMeaningDto(word.Id, word.Name, word.Meanings.First().Id, word.Meanings.First().Description, word.Meanings.First().Example);
+        return Ok(wordMeaning);
+    }
 
-        if (!_repository.EnsureAddWordWithMeaning(word, meaning))
+    [HttpPost]
+    [ProducesResponseType(200)]
+    public IActionResult CreateWordWithMeaning([FromBody] WordMeaningDto wordMeaning)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        var word  = new WordDto() {Id = wordMeaning.wordId, Name = wordMeaning.Name };
+        var meaning = new MeaningDto(wordMeaning.meaningId, wordMeaning.Description, wordMeaning.Example, wordMeaning.wordId);
+
+        if (!_repository.EnsureAddWordMeaning(word, meaning))
         {
             ModelState.AddModelError("Error", "Failed to create the word");
             return StatusCode(500, ModelState);
@@ -62,9 +58,7 @@ public class WordController: Controller
 
     [HttpPut("{wordId}/{meaningId}")]
     [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(404)]
-    public IActionResult UpdateWordWithMeaning(Guid wordId, Guid meaningId, [FromBody] WordWithMeaningDto wordWithMeaning)
+    public IActionResult UpdateWordWithMeaning(Guid wordId, Guid meaningId, [FromBody] WordMeaningDto wordMeaning)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -78,18 +72,18 @@ public class WordController: Controller
         var word = new WordDto()
         {
             Id = wordId,
-            Name = wordWithMeaning.Name
+            Name = wordMeaning.Name
         };
         
         var meaning = new MeaningDto()
         {
             Id = meaningId,
-            Description = wordWithMeaning.Description,
-            Example = wordWithMeaning.Example,
+            Description = wordMeaning.Description,
+            Example = wordMeaning.Example,
             WordId = wordId
         };
         
-        if (!_repository.UpdateWordWithMeaning(word, meaning))
+        if (!_repository.UpdateWordMeaning(word, meaning))
         {
             ModelState.AddModelError("Error", "Failed to update the word with meaning");
             return StatusCode(500, ModelState);
@@ -99,12 +93,9 @@ public class WordController: Controller
     }
 
     
-    [HttpDelete("{wordId}/{meaningId}")]
+    [HttpDelete("{wordId}")]
     [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(500)]
-    public IActionResult DeleteWordWithMeaning(Guid wordId, Guid meaningId)
+    public IActionResult DeleteWord(Guid wordId)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -112,10 +103,7 @@ public class WordController: Controller
         if (!_repository.IsWordExist(wordId))
             return NotFound();
         
-        if (!_repository.IsMeaningExist(meaningId))
-            return NotFound();
-        
-        if (!_repository.DeleteWordWithMeaning(wordId, meaningId))
+        if (!_repository.DeleteWord(wordId))
         {
             ModelState.AddModelError("Error", "Failed to delete the word with meaning");
             return StatusCode(500, ModelState);

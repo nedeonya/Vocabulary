@@ -75,16 +75,7 @@ public class MeaningControllerTests
         var result = _controller.DeleteMeaning(meaningId);
         result.Should().BeEquivalentTo(new NoContentResult());
     }
-    
-    [Test]
-    public void DeleteMeaning_WhenMeaningNotExist_ReturnsNotFound()
-    {
-        var meaningId = Guid.NewGuid();
-        _mockRepository.IsMeaningExist(meaningId).Returns(false);
-        
-        var result = _controller.DeleteMeaning(meaningId);
-        result.Should().BeEquivalentTo(new NotFoundResult());
-    }
+   
     
     [Test]
     public void DeleteMeaning_WhenFailedToDelete_ReturnsInternalServerError()

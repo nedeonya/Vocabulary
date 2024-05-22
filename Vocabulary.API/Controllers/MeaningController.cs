@@ -17,34 +17,26 @@ public class MeaningController: Controller
 
     [HttpGet("{wordName}")]
     [ProducesResponseType(200, Type = typeof(ICollection<IMeaning>))]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(400)]
     public IActionResult GetMeaningsForWord(string wordName)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState); 
-        
-        if (!_service.IsWordExist(wordName))
-            return NotFound();
-        
+               
         var meanings = _service.GetMeaningsForWord(wordName);
+        if (meanings.Count == 0)
+            return NotFound();
+
         return Ok(meanings);
 
     }
     
     [HttpDelete("{meaningId}")]
     [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(404)]
-    [ProducesResponseType(500)]
     public IActionResult DeleteMeaning(Guid meaningId)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
-        if (!_service.IsMeaningExist(meaningId))
-            return NotFound();
-        
+               
         if (!_service.DeleteMeaning(meaningId))
         {
             ModelState.AddModelError("Error", "Failed to delete the meaning");

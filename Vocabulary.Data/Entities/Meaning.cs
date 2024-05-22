@@ -9,6 +9,11 @@
         public Meaning(string Description, string? Example, Guid WordId) : this(Guid.NewGuid(), Description, Example, WordId)
         {
         }
+        
+        public virtual bool Equals(IMeaning other)
+        {
+            return Id == other.Id && Description == other.Description && Example == other.Example && WordId == other.WordId;
+        }
     }
 }
 

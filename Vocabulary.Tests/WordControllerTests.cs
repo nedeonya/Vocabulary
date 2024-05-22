@@ -58,7 +58,7 @@ public class WordControllerTests
     [Test]
     public void CreateWordWithMeaning_WhenServiceSucceeds_ReturnsOk()
     {
-        var wordWithMeaning = new WordWithMeaningDto()
+        var wordWithMeaning = new WordMeaningDto()
         {
             Name = "word-name", 
             Description = "description", 
@@ -78,7 +78,7 @@ public class WordControllerTests
     public void CreateWordWithMeaning_WhenModelStateIsNotValid_ReturnsBadRequest()
     {
         _controller.ModelState.AddModelError("Error", "Invalid model state");
-        var result = _controller.CreateWordWithMeaning(new WordWithMeaningDto());
+        var result = _controller.CreateWordWithMeaning(new WordMeaningDto());
         
         result.Should().BeEquivalentTo(new BadRequestObjectResult(_controller.ModelState));
     }
@@ -86,7 +86,7 @@ public class WordControllerTests
     [Test]
     public void CreateWordWithMeaning_WhenServiceFails_ReturnsInternalServerError()
     {
-        var wordWithMeaning = new WordWithMeaningDto()
+        var wordWithMeaning = new WordMeaningDto()
         {
             Name = "word-name", 
             Description = "description", 
@@ -112,7 +112,7 @@ public class WordControllerTests
     {
         var wordId = Guid.NewGuid();
         var meaningId = Guid.NewGuid();
-        var wordWithMeaning = new WordWithMeaningDto()
+        var wordWithMeaning = new WordMeaningDto()
         {
             Name = "word-name", 
             Description = "description", 
@@ -132,7 +132,7 @@ public class WordControllerTests
     {
         var wordId = Guid.NewGuid();
         var meaningId = Guid.NewGuid();
-        var wordWithMeaning = new WordWithMeaningDto()
+        var wordWithMeaning = new WordMeaningDto()
         {
             Name = "word-name", 
             Description = "description", 
@@ -150,7 +150,7 @@ public class WordControllerTests
     {
         var wordId = Guid.NewGuid();
         var meaningId = Guid.NewGuid();
-        var wordWithMeaning = new WordWithMeaningDto()
+        var wordWithMeaning = new WordMeaningDto()
         {
             Name = "word-name", 
             Description = "description", 
@@ -169,7 +169,7 @@ public class WordControllerTests
     {
         var wordId = Guid.NewGuid();
         var meaningId = Guid.NewGuid();
-        var wordWithMeaning = new WordWithMeaningDto()
+        var wordWithMeaning = new WordMeaningDto()
         {
             Name = "word-name", 
             Description = "description", 

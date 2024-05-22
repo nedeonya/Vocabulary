@@ -32,13 +32,13 @@ public class WordMeaningRepository : IWordMeaningRepository
         return context.Meanings.Any(m => m.Id == meaningId);
     }
 
-    public IWord GetWord(Guid wordId)
+    public IWord GetWordWithMeaning(Guid wordId, Guid meaningId)
     {
         using var context = _contextProvider.Create();
         return context.Words
             .Include(w=>w.Meanings)
-            .FirstOrDefault(w=>w.Id == wordId);
-    }  
+            .FirstOrDefault(w=>w.Id == wordId && w.Meanings.Any(m=>m.Id == meaningId));
+    }
     
     public IWord GetWord(string name)
     {
@@ -46,6 +46,14 @@ public class WordMeaningRepository : IWordMeaningRepository
         return context.Words
             .Include(w=>w.Meanings)
             .FirstOrDefault(w=>w.Name == name);
+    }
+    
+    public IWord GetWord(Guid wordId)
+    {
+        using var context = _contextProvider.Create();
+        return context.Words
+            .Include(w=>w.Meanings)
+            .FirstOrDefault(w=>w.Id == wordId);
     }
     
     public ICollection<IWord> GetWords()
@@ -56,13 +64,19 @@ public class WordMeaningRepository : IWordMeaningRepository
             .ToList<IWord>();
     }
 
-    public ICollection<IWord> GetWords(string wordName)
+    public ICollection<IWord> GetWords(string? wordName)
     {
+        if (string.IsNullOrEmpty(wordName))
+        {
+            return GetWords();
+        }
+
         using var context = _contextProvider.Create();
         return context.Words
-            .Include(w=>w.Meanings)
+            .Include(w => w.Meanings)
             .Where(w => w.Name.Contains(wordName))
             .ToList<IWord>();
+
     }
 
     public IMeaning GetMeaning(Guid meaningId)
@@ -126,13 +140,24 @@ public class WordMeaningRepository : IWordMeaningRepository
         return context.Save();
     }
     
-    public bool EnsureAddWordWithMeaning(IWord word, IMeaning meaning)
+    public bool EnsureAddWordMeaning(IWord word, IMeaning meaning)
     {
+        if (word == null || meaning == null)
+        {
+            return false;
+        }
+
         var existingWord = GetWord(word.Name);
         if (existingWord != null)
         {
-            var newMeaning = new Meaning(meaning.Id, meaning.Description, meaning.Example, existingWord.Id);
-            return AddMeaning(newMeaning);
+            var addMeaning = new Meaning()
+            {
+                Id = meaning.Id,
+                Description = meaning.Description,
+                Example = meaning.Example,
+                WordId = existingWord.Id
+            };
+            return AddMeaning(addMeaning);
         }
         else
         {
@@ -152,7 +177,10 @@ public class WordMeaningRepository : IWordMeaningRepository
         {
             return false;
         }
-        
+        if (updateWord.Equals(word))
+        {
+            return true;
+        }
         context.Words.Entry(updateWord).CurrentValues.SetValues(word);
         return context.Save();
     }
@@ -169,13 +197,16 @@ public class WordMeaningRepository : IWordMeaningRepository
         {
             return false;
         }
-        
+        if (updateMeaning.Equals(meaning))
+        {
+            return true;
+        }
         context.Meanings.Entry(updateMeaning).CurrentValues.SetValues(meaning);
         context.Meanings.Entry(updateMeaning).Property(m=>m.WordId).IsModified = false;
         return context.Save();
     }
     
-    public bool UpdateWordWithMeaning(IWord word, IMeaning meaning)
+    public bool UpdateWordMeaning(IWord word, IMeaning meaning)
     {
         return UpdateWord(word) && UpdateMeaning(meaning);
     }
@@ -188,8 +219,13 @@ public class WordMeaningRepository : IWordMeaningRepository
         {
             return false;
         }
-
+        
         context.Words.Remove(word);
+        var allMeanings = GetMeaningsForWord(wordId).ToList();
+        foreach (Meaning meaning in allMeanings)
+        {
+            context.Meanings.Remove(meaning);
+        }
         return context.Save();
     }
 
@@ -202,12 +238,14 @@ public class WordMeaningRepository : IWordMeaningRepository
             return false;
         }
 
+        var word = context.Words.Find(meaning.WordId);
+        var allMeanings = GetMeaningsForWord(word.Id).ToList();
+        if (allMeanings.Count == 1 && allMeanings[0].Id == meaningId)
+        {
+            context.Words.Remove(word);
+        }
+
         context.Meanings.Remove(meaning);
         return context.Save();
-    }
-
-    public bool DeleteWordWithMeaning(Guid wordId, Guid meaningId)
-    {
-        return DeleteWord(wordId) && DeleteMeaning(meaningId);
     }
 }

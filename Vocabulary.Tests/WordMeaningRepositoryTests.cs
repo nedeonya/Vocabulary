@@ -158,7 +158,7 @@ internal sealed class WordMeaningRepositoryTests
         var meaning = new Meaning("definition", "example", word.Id);
         
         using var scope = new AssertionScope();
-        repository.EnsureAddWordWithMeaning(word, meaning).Should().BeTrue();
+        repository.EnsureAddWordMeaning(word, meaning).Should().BeTrue();
         repository.IsMeaningExist(meaning.Id).Should().BeTrue();
     }
     
@@ -170,7 +170,7 @@ internal sealed class WordMeaningRepositoryTests
         var repository = CreateRepository();
         
         using var scope = new AssertionScope();
-        repository.EnsureAddWordWithMeaning(word, meaning).Should().BeTrue();
+        repository.EnsureAddWordMeaning(word, meaning).Should().BeTrue();
         repository.IsMeaningExist(meaning.Id).Should().BeTrue();
         repository.IsWordExist(word.Id).Should().BeTrue();
     }
@@ -187,7 +187,7 @@ internal sealed class WordMeaningRepositoryTests
         var updatedMeaning = new Meaning(meaning.Id, "updated-definition", "updated-example", updatedWord.Id);
         
         using var scope = new AssertionScope();
-        repository.UpdateWordWithMeaning(updatedWord, updatedMeaning).Should().BeTrue();
+        repository.UpdateWordMeaning(updatedWord, updatedMeaning).Should().BeTrue();
         repository.GetWord(word.Id).Name.Should().Be(updatedWord.Name);
         var actualMeaning = repository.GetMeaning(meaning.Id);
         actualMeaning.Description.Should().Be(updatedMeaning.Description);
@@ -202,11 +202,11 @@ internal sealed class WordMeaningRepositoryTests
         var updatedWord = new Word("updated-word");
         var updatedMeaning = new Meaning("updated-definition", "updated-example", updatedWord.Id);
         
-        repository.UpdateWordWithMeaning(updatedWord, updatedMeaning).Should().BeFalse();
+        repository.UpdateWordMeaning(updatedWord, updatedMeaning).Should().BeFalse();
     }
     
     [Test]
-    public void DeleteWordWithMeaning_WhenWordAndMeaningExist_ReturnsTrueAndDeleteWordAndMeaning()
+    public void DeleteWord_WhenWordAndMeaningExist_ReturnsTrueAndDeleteWordAndMeaning()
     {
         var word = new Word("word");
         var meaning = new Meaning("definition", "example", word.Id);
@@ -215,19 +215,52 @@ internal sealed class WordMeaningRepositoryTests
         repository.AddMeaning(meaning);
         
         using var scope = new AssertionScope();
-        repository.DeleteWordWithMeaning(word.Id, meaning.Id).Should().BeTrue();
+        repository.DeleteWord(word.Id).Should().BeTrue();
         repository.IsWordExist(word.Id).Should().BeFalse();
         repository.IsMeaningExist(meaning.Id).Should().BeFalse();
     }
     
     [Test]
-    public void DeleteWordWithMeaning_WhenWordAndMeaningNotExist_ReturnsFalse()
+    public void DeleteWord_WhenWordAndMeaningNotExist_ReturnsFalse()
     {
         var word = new Word("word");
         var meaning = new Meaning("definition", "example", word.Id);
         
         var repository = CreateRepository();
-        repository.DeleteWordWithMeaning(word.Id, meaning.Id).Should().BeFalse();
+        repository.DeleteWord(word.Id).Should().BeFalse();
+    }
+    
+    [Test]
+    public void DeleteMeaning_WhenFewMeaningsExist_ReturnsTrueAndDeleteTargetMeaning()
+    {
+        var word = new Word("word");
+        var meaning = new Meaning("definition", "example", word.Id);
+        var meaning2 = new Meaning("definition2", "example2", word.Id);
+        var repository = CreateRepository();
+        repository.AddWord(word);
+        repository.AddMeaning(meaning);
+        repository.AddMeaning(meaning2);
+        
+        using var scope = new AssertionScope();
+        repository.DeleteMeaning(meaning.Id).Should().BeTrue();
+        repository.IsMeaningExist(meaning.Id).Should().BeFalse();
+        repository.IsMeaningExist(meaning2.Id).Should().BeTrue();
+        repository.IsWordExist(word.Id).Should().BeTrue();
+    }
+    
+    [Test]
+    public void DeleteMeaning_WhenOneMeaningExist_ReturnsTrueAndDeleteMeaningAndWord()
+    {
+        var word = new Word("word");
+        var meaning = new Meaning("definition", "example", word.Id);
+        var repository = CreateRepository();
+        repository.AddWord(word);
+        repository.AddMeaning(meaning);
+        
+        using var scope = new AssertionScope();
+        repository.DeleteMeaning(meaning.Id).Should().BeTrue();
+        repository.IsMeaningExist(meaning.Id).Should().BeFalse();
+        repository.IsWordExist(word.Id).Should().BeFalse();
     }
     
     private static WordMeaningRepository CreateRepository()

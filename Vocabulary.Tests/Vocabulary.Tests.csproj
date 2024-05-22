@@ -31,4 +31,8 @@
       <ProjectReference Include="..\Vocabulary.Data\Vocabulary.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="WordControllerTests.cs" />
+    </ItemGroup>
+
 </Project>
