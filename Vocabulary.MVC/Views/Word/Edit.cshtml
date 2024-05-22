@@ -1,0 +1,30 @@
+@model EditWordMeaningViewModel
+
+<h2>Edit</h2>
+
+<form method="post" asp-controller="Word" asp-action="Edit" asp-route-wordId="@Model.WordId" asp-route-meaningId="@Model.MeaningId">
+    <div class="form-group">
+        <label for="wordName">Word:</label>
+        <input type="text" class="form-control" id="wordName" name="Name" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <input type="text" class="form-control" id="description" name="Description" value="@Model.Description" required />
+    </div>
+    <div class="form-group">
+        <label for="example">Example:</label>
+        <input type="text" class="form-control" id="example" name="Example" value="@Model.Example" />
+    </div>
+    <div class="button-container">
+        <button type="submit" class="btn btn-outline-primary">Save</button>
+        <a class="btn btn-outline-secondary" asp-controller="Word" asp-action="Index">Cancel</a>
+    </div>
+</form>
+
+<style>
+
+    .button-container {
+        margin-top: 1rem;
+    }
+ 
+</style>

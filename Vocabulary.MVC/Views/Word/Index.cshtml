@@ -1,0 +1,61 @@
+@model IEnumerable<WordViewModel>
+
+@foreach (var word in Model)
+{
+    <div class="word-container">
+        <div class="word-header">
+            <h2>@word.Name</h2>
+          
+                <form method="post" asp-controller="Word" asp-action="Delete" asp-route-wordId="@word.Id">
+                    <input type="submit" value="Delete" class="btn btn-outline-danger"/>
+                </form>
+        </div>    
+        @foreach (var meaning in word.Meanings)
+        {
+            <div class="meaning-container">
+                <p><strong>Description:</strong> @meaning.Description</p>
+                <p><strong>Example:</strong> @meaning.Example</p>
+
+                <div class="button-container">
+                    <form method="get" asp-controller="Word" asp-action="Edit" asp-route-wordId="@word.Id" asp-route-meaningId="@meaning.Id">
+                        <input type="hidden" name="wordId" value="@word.Id"/>
+                        <input type="hidden" name="meaningId" value="@meaning.Id"/>
+                        <input type="submit" value="Edit" class="btn btn-outline-primary"/>
+                    </form>
+
+                    <form method="post" asp-controller="Meaning" asp-action="Delete" asp-route-meaningId="@meaning.Id">
+                        <input type="submit" value="Delete" class="btn btn-outline-danger"/>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<style>
+    .word-container {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: aliceblue;
+    }
+
+    .meaning-container {
+        margin-bottom: 1rem;
+        padding: .5rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: white
+    }
+    
+    .button-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    .word-header {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>

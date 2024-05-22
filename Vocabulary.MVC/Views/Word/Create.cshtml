@@ -1,0 +1,34 @@
+@model AddWordMeaningViewModel
+
+<h2>Create</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="name">Word:</label>
+        <input type="text" id="name" name="Name" class="form-control" required/>
+    </div>
+
+    <div id="meanings">
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="Description" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="example">Example:</label>
+            <input type="text" id="example" name="Example" class="form-control" />
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button type="submit" class="btn btn-outline-primary">Create</button>
+    </div>
+    
+</form>
+
+<style>
+    .button-container {
+        display: flex;
+        margin-top: 1rem;
+    }
+</style>
+
