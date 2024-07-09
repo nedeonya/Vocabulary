@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.API", "Vocabulary.API\Vocabulary.API.csproj", "{ADE61A6C-EAD9-4A8B-A9ED-7F4C594521AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vocabulary.API", "Vocabulary.API\Vocabulary.API.csproj", "{ADE61A6C-EAD9-4A8B-A9ED-7F4C594521AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.Tests", "Vocabulary.Tests\Vocabulary.Tests.csproj", "{03EC4CAD-DD09-449F-9181-3340EE9B90A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vocabulary.Tests", "Vocabulary.Tests\Vocabulary.Tests.csproj", "{03EC4CAD-DD09-449F-9181-3340EE9B90A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.Data", "Vocabulary.Data\Vocabulary.Data.csproj", "{51155E32-2E34-4BEF-97B4-AB5C9DEDFA6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vocabulary.Data", "Vocabulary.Data\Vocabulary.Data.csproj", "{51155E32-2E34-4BEF-97B4-AB5C9DEDFA6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.Contracts", "Vocabulary.Contracts\Vocabulary.Contracts.csproj", "{7A58EE0E-0767-4D09-8CCF-00B64DF92A95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vocabulary.Contracts", "Vocabulary.Contracts\Vocabulary.Contracts.csproj", "{7A58EE0E-0767-4D09-8CCF-00B64DF92A95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vocabulary.MVC", "Vocabulary.MVC\Vocabulary.MVC.csproj", "{49792C3D-AF68-4651-AC44-1A037E9B9FAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vocabulary.MVC", "Vocabulary.MVC\Vocabulary.MVC.csproj", "{49792C3D-AF68-4651-AC44-1A037E9B9FAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.Data", "User.Data\User.Data.csproj", "{F1E45FEC-F8A3-43E7-8071-669B0A5974D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{49792C3D-AF68-4651-AC44-1A037E9B9FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49792C3D-AF68-4651-AC44-1A037E9B9FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49792C3D-AF68-4651-AC44-1A037E9B9FAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1E45FEC-F8A3-43E7-8071-669B0A5974D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1E45FEC-F8A3-43E7-8071-669B0A5974D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1E45FEC-F8A3-43E7-8071-669B0A5974D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1E45FEC-F8A3-43E7-8071-669B0A5974D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

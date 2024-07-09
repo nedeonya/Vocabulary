@@ -1,6 +1,4 @@
-using Vocabulary.Data;
-
-namespace Vocabulary.Migrations;
+namespace Vocabulary.Data;
 
 public class DataContextProvider: IDataContextProvider
 {

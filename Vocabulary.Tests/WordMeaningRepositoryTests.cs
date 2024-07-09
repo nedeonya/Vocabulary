@@ -16,7 +16,6 @@ internal sealed class WordMeaningRepositoryTests
         repository.AddWord(word);
         
         using var scope = new AssertionScope();
-        repository.IsWordExist(word.Name).Should().BeTrue();
         repository.IsWordExist(word.Id).Should().BeTrue();
     }
     
@@ -27,7 +26,6 @@ internal sealed class WordMeaningRepositoryTests
         
         var repository = CreateRepository();
         using var scope = new AssertionScope();
-        repository.IsWordExist(word.Name).Should().BeFalse();
         repository.IsWordExist(word.Id).Should().BeFalse();
     }
     
@@ -74,56 +72,24 @@ internal sealed class WordMeaningRepositoryTests
     [Test]
     public void GetWords_WhenWordsExist_ReturnsWords()
     {
-        var word1 = new Word("word-1");
-        var word2 = new Word("word-2");
+        string userId = Guid.NewGuid().ToString();
+        var word1 = new Word(){Name = "word-1", UserId = userId};
+        var word2 = new Word(){Name = "word-2", UserId = userId};
         var repository = CreateRepository();
         repository.AddWord(word1);
         repository.AddWord(word2);
         
-        repository.GetWords().Should().BeEquivalentTo(new List<IWord> { word1, word2 });
+        repository.GetWords(null, userId).Should().BeEquivalentTo(new List<IWord> { word1, word2 });
     }
     
     [Test]
     public void GetWords_WhenWordsNotExist_ReturnsEmptyList()
     {
+        string userId = Guid.NewGuid().ToString();
         var repository = CreateRepository();
-        repository.GetWords().Should().BeEmpty();
+        repository.GetWords(null, userId).Should().BeEmpty();
     }
     
-    [Test]
-    public void GetWordsByName_WhenWordsExist_ReturnsWords()
-    {
-        var word1 = new Word("word-1");
-        var word2 = new Word("word-2");
-        var repository = CreateRepository();
-        repository.AddWord(word1);
-        repository.AddWord(word2);
-        
-        repository.GetWords("word").Should().BeEquivalentTo(new List<IWord> { word1, word2 });
-    }
-    
-    [Test]
-    public void GetWordsByName_WhenWordsNotExist_ReturnsEmptyList()
-    {
-        var repository = CreateRepository();
-        repository.GetWords("non-existing-word").Should().BeEmpty();
-    }
-    
-    [Test]
-    public void GetMeaning_WhenMeaningExist_ReturnsMeaning()
-    {
-        var word = new Word("word");
-        var meaning = new Meaning("definition", "example", word.Id);
-        var repository = CreateRepository();
-        repository.AddWord(word);
-        repository.AddMeaning(meaning);
-
-        using var scope = new AssertionScope();
-        repository.GetMeaning(meaning.Id).Description.Should().Be(meaning.Description);
-        repository.GetMeaning(meaning.Id).Example.Should().Be(meaning.Example);
-        repository.GetMeaning(meaning.Id).WordId.Should().Be(meaning.WordId);
-    }
-
     [Test]
     public void GetMeaningsForWord_WhenMeaningsExist_ReturnsMeanings()
     {
@@ -135,7 +101,7 @@ internal sealed class WordMeaningRepositoryTests
         repository.AddMeaning(meaning1);
         repository.AddMeaning(meaning2);
         
-        repository.GetMeaningsForWord(word.Name).Should()
+        repository.GetMeaningsForWord(word.Id).Should()
             .Contain(new List<IMeaning> { meaning1, meaning2 });
     }
     
@@ -146,7 +112,7 @@ internal sealed class WordMeaningRepositoryTests
         var repository = CreateRepository();
         repository.AddWord(word);
         
-        repository.GetMeaningsForWord(word.Name).Should().BeEmpty();
+        repository.GetMeaningsForWord(word.Id).Should().BeEmpty();
     }
     
     [Test]
@@ -183,13 +149,13 @@ internal sealed class WordMeaningRepositoryTests
         var repository = CreateRepository();
         repository.AddWord(word);
         repository.AddMeaning(meaning);
-        var updatedWord = new Word(word.Id, "updated-word", word.Meanings);
+        var updatedWord = new Word(word.Id, "updated-word", word.Meanings, null);
         var updatedMeaning = new Meaning(meaning.Id, "updated-definition", "updated-example", updatedWord.Id);
         
         using var scope = new AssertionScope();
         repository.UpdateWordMeaning(updatedWord, updatedMeaning).Should().BeTrue();
         repository.GetWord(word.Id).Name.Should().Be(updatedWord.Name);
-        var actualMeaning = repository.GetMeaning(meaning.Id);
+        var actualMeaning = repository.GetMeaningsForWord(word.Id).First();
         actualMeaning.Description.Should().Be(updatedMeaning.Description);
         actualMeaning.Example.Should().Be(updatedMeaning.Example);
         actualMeaning.WordId.Should().Be(word.Id);

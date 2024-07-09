@@ -9,7 +9,7 @@ using Vocabulary.Data;
 
 #nullable disable
 
-namespace Vocabulary.Migrations
+namespace Vocabulary.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
     [Migration("20240229101807_Init")]

@@ -1,11 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Vocabulary.Data.Entities;
 using Vocabulary.Data.Repository;
 
-namespace Vocabulary.Controllers;
+namespace Vocabulary.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+
 public class MeaningController: Controller
 {
     private readonly IWordMeaningRepository _service;
@@ -13,21 +15,6 @@ public class MeaningController: Controller
     public MeaningController(IWordMeaningRepository service)
     {
         _service = service;
-    }
-
-    [HttpGet("{wordName}")]
-    [ProducesResponseType(200, Type = typeof(ICollection<IMeaning>))]
-    public IActionResult GetMeaningsForWord(string wordName)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState); 
-               
-        var meanings = _service.GetMeaningsForWord(wordName);
-        if (meanings.Count == 0)
-            return NotFound();
-
-        return Ok(meanings);
-
     }
     
     [HttpDelete("{meaningId}")]

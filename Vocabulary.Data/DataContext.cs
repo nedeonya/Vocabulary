@@ -1,10 +1,12 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Vocabulary.Data.Entities;
 
 namespace Vocabulary.Data;
 
-public class DataContext: DbContext, IDataContext
+public class DataContext: IdentityDbContext, IDataContext
 {
 
     public DataContext()
@@ -27,7 +29,8 @@ public class DataContext: DbContext, IDataContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var connectionString = $@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=Vocabulary;AttachDBFilename={Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Vocabulary.mdf")}";
+            var connectionString =
+                $@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=Vocabulary;AttachDBFilename={Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Vocabulary.mdf")}";
             optionsBuilder.UseSqlServer(connectionString);
         }
     }

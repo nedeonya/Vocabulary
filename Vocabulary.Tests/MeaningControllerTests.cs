@@ -2,10 +2,10 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
-using Vocabulary.Controllers;
+using Vocabulary.API.Controllers;
 using Vocabulary.Data.Entities;
 using Vocabulary.Data.Repository;
-using Vocabulary.Dto;
+using Vocabulary.API.Dto;
 
 namespace Vocabulary_Tests;
 
@@ -26,43 +26,6 @@ public class MeaningControllerTests
     public void TearDown()
     {
         _controller.Dispose();
-    }
-    
-    [Test]
-    public void GetMeaningsForWord_WhenWordExist_ReturnsMeanings()
-    {
-        var wordName = "existing-word";
-        var meanings = new List<IMeaning>()
-        {
-            new MeaningDto() { Description = "meaning1", Example = "example1" },
-            new MeaningDto() { Description = "meaning2", Example = "example2" }
-        };
-        _mockRepository.IsWordExist(wordName).Returns(true);
-        _mockRepository.GetMeaningsForWord(wordName).Returns(meanings);
-        
-        var result = _controller.GetMeaningsForWord(wordName) as OkObjectResult;
-        
-        using var scope = new AssertionScope();
-        result.Value.Should().BeEquivalentTo(meanings);
-    }
-    
-    [Test]
-    public void GetMeaningsForWord_WhenWordNotExist_ReturnsNotFound()
-    {
-        var wordName = "non-existing-word";
-        _mockRepository.IsWordExist(wordName).Returns(false);
-        
-        var result = _controller.GetMeaningsForWord(wordName);
-        result.Should().BeEquivalentTo(new NotFoundResult());
-    }
-
-    [Test]
-    public void GetMeaningsForWord_WhenModelStateIsInvalid_ReturnsBadRequest()
-    {
-        _controller.ModelState.AddModelError("Error", "Invalid model state");
-        
-        var result = _controller.GetMeaningsForWord("word");
-        result.Should().BeEquivalentTo(new BadRequestObjectResult(_controller.ModelState));
     }
     
     [Test]

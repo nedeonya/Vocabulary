@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Vocabulary.Migrations
+namespace Vocabulary.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration

@@ -1,26 +1,32 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Vocabulary.Data.Entities;
 using Vocabulary.Data.Repository;
-using Vocabulary.Dto;
+using Vocabulary.API.Dto;
 
-namespace Vocabulary.Controllers;
+namespace Vocabulary.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
 public class WordController: Controller
 {
-    private IWordMeaningRepository _repository;
-    
+    private readonly IWordMeaningRepository _repository;
+    private string UserId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     public WordController(IWordMeaningRepository repository)
     {
         _repository = repository;
     }
-    
+
+
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(ICollection<IWord>))]
     public IActionResult GetWords(string? wordName)
     {
-        var words = _repository.GetWords(wordName);
+        var words = _repository.GetWords(wordName, UserId);
         return Ok(words);
     }
 
@@ -31,9 +37,9 @@ public class WordController: Controller
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
         var word = _repository.GetWordWithMeaning(wordId, meaningId);
-        var wordMeaning = new WordMeaningDto(word.Id, word.Name, word.Meanings.First().Id, word.Meanings.First().Description, word.Meanings.First().Example);
+        var meaning = word.Meanings.First(m => m.Id == meaningId);
+        var wordMeaning = new WordMeaningDto(word.Id, word.Name, meaning.Id, meaning.Description, meaning.Example);
         return Ok(wordMeaning);
     }
 
@@ -43,8 +49,8 @@ public class WordController: Controller
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
-        var word  = new WordDto() {Id = wordMeaning.wordId, Name = wordMeaning.Name };
+
+        var word  = new WordDto() {Id = wordMeaning.wordId, Name = wordMeaning.Name, UserId = UserId};
         var meaning = new MeaningDto(wordMeaning.meaningId, wordMeaning.Description, wordMeaning.Example, wordMeaning.wordId);
 
         if (!_repository.EnsureAddWordMeaning(word, meaning))
@@ -72,7 +78,8 @@ public class WordController: Controller
         var word = new WordDto()
         {
             Id = wordId,
-            Name = wordMeaning.Name
+            Name = wordMeaning.Name,
+            UserId = UserId
         };
         
         var meaning = new MeaningDto()

@@ -5,18 +5,21 @@ namespace Vocabulary.MVC.Controllers;
 public class MeaningController : Controller
 {
     private readonly string _apiUri = "http://localhost:5031/api/meaning";
-    private readonly HttpClient _client;
+    private readonly IHttpClientFactory _clientFactory;
 
-    public MeaningController()
+    public MeaningController(IHttpClientFactory clientFactory)
     {
-        _client = new HttpClient();
-        _client.BaseAddress = new Uri(_apiUri);
+        _clientFactory = clientFactory;
     }
 
     [HttpPost]
     public IActionResult Delete(Guid meaningId)
     {
-        HttpResponseMessage response = _client.DeleteAsync($"{_client.BaseAddress}/{meaningId}").Result;
+        
+        var client = _clientFactory.CreateClient();
+        client.BaseAddress = new Uri(_apiUri);
+        
+        HttpResponseMessage response = client.DeleteAsync($"{client.BaseAddress}/{meaningId}").Result;
 
         if (response.IsSuccessStatusCode)
         {

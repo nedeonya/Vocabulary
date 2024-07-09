@@ -1,4 +1,4 @@
-namespace Vocabulary.Dto;
+namespace Vocabulary.API.Dto;
 
 public record WordMeaningDto(Guid wordId, string Name, Guid meaningId, string Description, string? Example)
 {

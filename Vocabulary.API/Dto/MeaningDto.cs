@@ -1,6 +1,6 @@
 using Vocabulary.Data.Entities;
 
-namespace Vocabulary.Dto;
+namespace Vocabulary.API.Dto;
 
 public record MeaningDto(Guid Id, string Description, string? Example, Guid WordId): IMeaning
 {
