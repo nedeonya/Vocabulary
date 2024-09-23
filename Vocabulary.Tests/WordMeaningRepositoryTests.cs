@@ -1,5 +1,6 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Vocabulary.Contracts;
 using Vocabulary.Data.Entities;
 using Vocabulary.Data.Repository;
 

@@ -1,6 +1,5 @@
-
-using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
+using Vocabulary.Contracts;
 using Vocabulary.Data.Entities;
 
 namespace Vocabulary.Data.Repository;
@@ -30,10 +29,10 @@ public class WordMeaningRepository : IWordMeaningRepository
     {
         using var context = _contextProvider.Create();
         return context.Words
-            .Include(w=>w.Meanings)
-            .FirstOrDefault(w=>w.Id == wordId && w.Meanings.Any(m=>m.Id == meaningId));
+            .Include(w => w.Meanings)
+            .FirstOrDefault(w => w.Id == wordId && w.Meanings.Any(m => m.Id == meaningId));
     }
-    
+
     public ICollection<IWord> GetWords(string? wordName, string userId)
     {
         if (string.IsNullOrEmpty(wordName))
@@ -43,7 +42,7 @@ public class WordMeaningRepository : IWordMeaningRepository
 
         using var context = _contextProvider.Create();
         return context.Words
-            .Where(w=>w.UserId == userId)
+            .Where(w => w.UserId == userId)
             .Include(w => w.Meanings)
             .Where(w => w.Name.Contains(wordName))
             .ToList<IWord>();
@@ -57,7 +56,7 @@ public class WordMeaningRepository : IWordMeaningRepository
             .Where(m => m.WordId == wordId)
             .ToList<IMeaning>();
     }
-    
+
     public bool EnsureAddWordMeaning(IWord word, IMeaning meaning)
     {
         if (word == null || meaning == null)
@@ -82,7 +81,7 @@ public class WordMeaningRepository : IWordMeaningRepository
             return AddWord(word) && AddMeaning(meaning);
         }
     }
-    
+
     public bool UpdateWordMeaning(IWord word, IMeaning meaning)
     {
         return UpdateWord(word) && UpdateMeaning(meaning);
@@ -96,7 +95,7 @@ public class WordMeaningRepository : IWordMeaningRepository
         {
             return false;
         }
-        
+
         context.Words.Remove(word);
         var allMeanings = GetMeaningsForWord(wordId).ToList();
         foreach (Meaning meaning in allMeanings)
@@ -125,15 +124,15 @@ public class WordMeaningRepository : IWordMeaningRepository
         context.Meanings.Remove(meaning);
         return context.Save();
     }
-    
+
     internal IWord GetWord(Guid wordId)
     {
         using var context = _contextProvider.Create();
         return context.Words
-            .Include(w=>w.Meanings)
-            .FirstOrDefault(w=>w.Id == wordId);
+            .Include(w => w.Meanings)
+            .FirstOrDefault(w => w.Id == wordId);
     }
-    
+
     internal bool AddWord(IWord word)
     {
         if (word == null)
@@ -147,13 +146,13 @@ public class WordMeaningRepository : IWordMeaningRepository
             Name = word.Name,
             UserId = word.UserId
         };
-        
+
         using var context = _contextProvider.Create();
         context.Words.Add(addWord);
 
         return context.Save();
     }
-   
+
     internal bool AddMeaning(IMeaning meaning)
     {
         if (meaning == null)
@@ -168,12 +167,12 @@ public class WordMeaningRepository : IWordMeaningRepository
             Example = meaning.Example,
             WordId = meaning.WordId
         };
-        
+
         using var context = _contextProvider.Create();
         context.Meanings.Add(addMeaning);
         return context.Save();
     }
-    
+
     private bool UpdateWord(IWord word)
     {
         if (word == null)
@@ -191,7 +190,7 @@ public class WordMeaningRepository : IWordMeaningRepository
             return true;
         }
         context.Words.Entry(updateWord).CurrentValues.SetValues(word);
-        context.Words.Entry(updateWord).Property(w=>w.UserId).IsModified = false;
+        context.Words.Entry(updateWord).Property(w => w.UserId).IsModified = false;
         return context.Save();
     }
 
@@ -212,27 +211,27 @@ public class WordMeaningRepository : IWordMeaningRepository
             return true;
         }
         context.Meanings.Entry(updateMeaning).CurrentValues.SetValues(meaning);
-        context.Meanings.Entry(updateMeaning).Property(m=>m.WordId).IsModified = false;
+        context.Meanings.Entry(updateMeaning).Property(m => m.WordId).IsModified = false;
         return context.Save();
     }
-    
+
     private IWord GetWord(string name, string userId)
     {
         using var context = _contextProvider.Create();
         return context.Words
-            .Where(w=>w.UserId == userId)
-            .Include(w=>w.Meanings)
-            .FirstOrDefault(w=>w.Name == name);
+            .Where(w => w.UserId == userId)
+            .Include(w => w.Meanings)
+            .FirstOrDefault(w => w.Name == name);
     }
-    
+
     private ICollection<IWord> GetWords(string userId)
     {
         using var context = _contextProvider.Create();
         return context.Words
-            .Where(w=>w.UserId == userId)
-            .Include(w=>w.Meanings)
+            .Where(w => w.UserId == userId)
+            .Include(w => w.Meanings)
             .ToList<IWord>();
     }
-   
+
 
 }

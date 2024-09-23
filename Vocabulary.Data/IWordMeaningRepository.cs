@@ -1,3 +1,4 @@
+using Vocabulary.Contracts;
 using Vocabulary.Data.Entities;
 
 namespace Vocabulary.Data.Repository;

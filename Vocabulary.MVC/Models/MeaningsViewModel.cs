@@ -1,4 +1,3 @@
-using Vocabulary.Data.Entities;
 
 namespace Vocabulary.MVC.Models;
 

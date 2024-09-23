@@ -1,4 +1,4 @@
-using Vocabulary.Data.Entities;
+using Vocabulary.Contracts;
 
 namespace Vocabulary.API.Dto;
 

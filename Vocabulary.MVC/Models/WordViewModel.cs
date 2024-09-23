@@ -1,4 +1,3 @@
-using Vocabulary.Data.Entities;
 
 namespace Vocabulary.MVC.Models;
 public record WordViewModel(Guid Id, string Name, List<MeaningViewModel> Meanings)

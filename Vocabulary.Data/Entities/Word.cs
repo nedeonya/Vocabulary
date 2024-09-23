@@ -1,4 +1,6 @@
-﻿namespace Vocabulary.Data.Entities
+﻿using Vocabulary.Contracts;
+
+namespace Vocabulary.Data.Entities
 {
     public record Word(Guid Id, string Name, ICollection<Meaning> Meanings, string? UserId) : IWord
     {

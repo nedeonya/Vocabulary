@@ -1,4 +1,6 @@
-﻿namespace Vocabulary.Data.Entities
+﻿using Vocabulary.Contracts;
+
+namespace Vocabulary.Data.Entities
 {
     public record Meaning(Guid Id, string Description, string? Example, Guid WordId) : IMeaning
     {

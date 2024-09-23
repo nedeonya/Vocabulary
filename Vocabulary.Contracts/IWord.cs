@@ -1,4 +1,4 @@
-namespace Vocabulary.Data.Entities;
+namespace Vocabulary.Contracts;
 
 public interface IWord
 {

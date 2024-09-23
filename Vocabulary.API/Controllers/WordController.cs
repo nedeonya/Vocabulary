@@ -1,21 +1,20 @@
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Vocabulary.Data.Entities;
 using Vocabulary.Data.Repository;
 using Vocabulary.API.Dto;
+using Vocabulary.Contracts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Vocabulary.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
 public class WordController: Controller
 {
     private readonly IWordMeaningRepository _repository;
-    private string UserId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    private string? UserId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     public WordController(IWordMeaningRepository repository)
     {
         _repository = repository;

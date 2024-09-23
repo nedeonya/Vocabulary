@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <DefineConstants>$(DefineConstants);DISABLE_AUTH</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="RestSharp" Version="111.4.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Vocabulary.Contracts\Vocabulary.Contracts.csproj" />
+    </ItemGroup>
+
+</Project>
